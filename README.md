@@ -1,2 +1,2 @@
 # streetmusic
-pythonで地図アプリ
+pythonで地図アプリを構築した。
