@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="header">
+    <h1>あなたのライブ記録</h1>
+    <form id="infoForm" method="POST">
+        <label for="place">場所:</label>
+        <select name="place">
+            {% for place in places %}
+            <option value="{{ place[0] }}">{{ place[1] }}</option>
+            {% endfor %}
+        </select><br>
+        アーティスト名: <input type="text" name="nickname"><br>
+        動員数: <input type="number" name="attendance"><br>
+        セトリ:<br>
+        <input type="text" name="setlist1"><br>
+        <input type="text" name="setlist2"><br>
+        <input type="text" name="setlist3"><br>
+        <input type="text" name="setlist4"><br>
+        <input type="text" name="setlist5"><br>
+        投げ銭: <input type="number" step="0.01" name="donation"><br>
+        日付: <input type="date" name="event_date"><br>
+        <input type="submit" value="送信">
+    </form>
+</div>
+
+<h1>マップ</h1>
+<div id="map"></div>
+
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<!-- Leaflet JavaScript -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+    var map = L.map('map').setView([35.681236, 139.764936], 10);
+    L.tileLayer('https://osm.gdl.jp/styles/osm-bright-ja/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+    }).addTo(map);
+
+    {% for entry in entries %}
+    L.marker([{{ entry[1] }}, {{ entry[2] }}]).addTo(map)
+        .bindPopup('<b>{{ entry[0] }}</b><br>{{ entry[3]|safe }}');
+    {% endfor %}
+</script>
+
+{% endblock %}
